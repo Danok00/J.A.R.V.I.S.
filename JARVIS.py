@@ -1,4 +1,5 @@
 import os
+import speech_recognition as sr
 
 #---------------
 #import pyttsx3
@@ -14,3 +15,11 @@ def talk(words):
 
 talk('Привіт, як справи')
 talk('Hello')
+
+
+
+def command():
+    r = sr.Recognizer
+
+
+command()
