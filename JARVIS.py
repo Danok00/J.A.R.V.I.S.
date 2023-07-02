@@ -1,4 +1,6 @@
 import os
+import sys
+
 import speech_recognition as sr
 import webbrowser
 
@@ -14,7 +16,7 @@ def talk(words):
     os.system('say ' + words)
 
 
-talk('Привіт, як справи')
+# talk('Привіт, як справи')
 talk('Hello')
 
 
@@ -28,8 +30,13 @@ def command():
         r.adjust_for_ambient_noise(source, duration = 1)
         audio = r.listen(source)
 
-    task = r.recognize_google(audio, language = 'en=US').lower()
-    print('You: ' + task)
+    try:
+       # task = r.recognize_google(audio, language = 'en=US').lower()
+        task = r.recognize_google(audio, language='uk=UA').lower()
+        print('You: ' + task)
+    except sr.UnknownValueError():
+        talk('Я вас не зрозумів')
+        task = command()
 
     return task
 
@@ -40,6 +47,13 @@ def make_something(ar_task):
         talk('ok')
         url = 'https://rezka.ag/films/'
         webbrowser.open(url)
+
+    elif 'stop' in ar_task:
+        talk('Good buy')
+        sys.exit()
+
+    elif ('name' and 'your') in ar_task:
+        talk('My name is JARVIS')
 
 while True:
     make_something(command())
