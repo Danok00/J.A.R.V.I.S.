@@ -22,7 +22,7 @@ talk('Hello')
 
 
 def command():
-    r = sr.Recognizer
+    r = sr.Recognizer()
 
     with sr.Microphone() as source:
         print('Say')
@@ -31,10 +31,10 @@ def command():
         audio = r.listen(source)
 
     try:
-       # task = r.recognize_google(audio, language = 'en=US').lower()
-        task = r.recognize_google(audio, language='uk=UA').lower()
+        task = r.recognize_google(audio, language = 'en-US').lower()
+        #task = r.recognize_google(audio, language='uk-UA').lower()
         print('You: ' + task)
-    except sr.UnknownValueError():
+    except sr.UnknownValueError:
         talk('Я вас не зрозумів')
         task = command()
 
