@@ -4,6 +4,22 @@ import sys
 import speech_recognition as sr
 import webbrowser
 
+import openai
+
+from dotenv import load_dotenv as ld
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    ld(dotenv_path)
+
+openai.api_key = os.getenv('api_key')
+
+def ai_response(user_input):
+    compiletion = openai.ChatCompletion.create(
+        model = 'gpt-3.5-turbo',
+        messages=[{'role': 'user', 'content': user_input}]
+    )
+    return compiletion
+
 #---------------
 #import pyttsx3
 #engine = pyttsx3.init()
@@ -20,9 +36,9 @@ def talk(words):
 talk('Hello')
 
 
-
+r = sr.Recognizer()
 def command():
-    r = sr.Recognizer()
+
 
     with sr.Microphone() as source:
         print('Say')
@@ -31,11 +47,12 @@ def command():
         audio = r.listen(source)
 
     try:
-        task = r.recognize_google(audio, language = 'en-US').lower()
+        task = r.recognize_google(audio, language = 'ru-RU').lower()
+        #task = r.recognize_google(audio, language = 'en-US').lower()
         #task = r.recognize_google(audio, language='uk-UA').lower()
         print('You: ' + task)
     except sr.UnknownValueError:
-        talk('Я вас не зрозумів')
+        talk('Не понял тебя')
         task = command()
 
     return task
@@ -43,17 +60,38 @@ def command():
 
 
 def make_something(ar_task):
-    if ('open' and 'site') in ar_task:
+    if ('открой' and 'сайт') in ar_task:
         talk('ok')
         url = 'https://rezka.ag/films/'
         webbrowser.open(url)
 
-    elif 'stop' in ar_task:
-        talk('Good buy')
+    elif 'стоп' in ar_task:
+        talk('Пока')
         sys.exit()
 
-    elif ('name' and 'your') in ar_task:
+    elif ("имя" and 'твое') in ar_task:
         talk('My name is JARVIS')
+
+    else:
+        # print(handle_input(input("You: ")).choices[0].message.content)
+        try:
+            ai_res = ai_response(ar_task).choices[0].message.content
+            talk(ai_res)
+        except openai.error.ServiceUnavailableError:
+            talk("Появилась ошибка, попробуй еще раз")
+            try:
+                ai_res = ai_response(ar_task).choices[0].message.content
+                talk(ai_res)
+            except openai.error.ServiceUnavailableError:
+                talk("Не могу обробатать ответ попробуй еще раз")
+            except openai.error.RateLimitError:
+                talk('Попробуй через 20 секунд')
+                r.pause_threshold = 20
+            except:
+                talk('Упс, что-то пошло не так. Попробуй еще')
+
+
+
 
 while True:
     make_something(command())
