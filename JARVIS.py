@@ -33,8 +33,8 @@ def talk(words):
 
 
 # talk('Привіт, як справи')
-talk('Hello')
-
+#talk('Hello')
+talk('Привет')
 
 r = sr.Recognizer()
 def command():
@@ -69,7 +69,7 @@ def make_something(ar_task):
         talk('Пока')
         sys.exit()
 
-    elif ("имя" and 'твое') in ar_task:
+    elif ('зовут' and 'тебя') in ar_task:
         talk('My name is JARVIS')
 
     else:
