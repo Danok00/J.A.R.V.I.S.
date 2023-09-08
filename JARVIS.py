@@ -60,9 +60,24 @@ def command():
 
 
 def make_something(ar_task):
-    if ('открой' and 'сайт') in ar_task:
-        talk('ok')
+    if ('открой' and 'фильмы') in ar_task:
+        talk('oк')
         url = 'https://rezka.ag/films/'
+        webbrowser.open(url)
+
+    elif ('открой' and 'youtube') in ar_task:
+        talk('oк')
+        url = 'https://www.youtube.com'
+        webbrowser.open(url)
+
+    elif ('открой' and 'школу') in ar_task:
+        talk('oк')
+        url = 'https://classroom.google.com/u/1/h'
+        webbrowser.open(url)
+
+    elif ('открой' and 'telegram') in ar_task:
+        talk('oк')
+        url = 'https://web.telegram.org/k/'
         webbrowser.open(url)
 
     elif 'стоп' in ar_task:
@@ -70,7 +85,7 @@ def make_something(ar_task):
         sys.exit()
 
     elif ('зовут' and 'тебя') in ar_task:
-        talk('My name is JARVIS')
+        talk('Меня зовут JARVIS')
 
     else:
         # print(handle_input(input("You: ")).choices[0].message.content)
