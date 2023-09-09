@@ -80,6 +80,11 @@ def make_something(ar_task):
         url = 'https://web.telegram.org/k/'
         webbrowser.open(url)
 
+    elif ('открой' and 'аниме') in ar_task:
+        talk('oк')
+        url = 'https://jut.su'
+        webbrowser.open(url)
+
     elif 'стоп' in ar_task:
         talk('Пока')
         sys.exit()
@@ -91,6 +96,7 @@ def make_something(ar_task):
         # print(handle_input(input("You: ")).choices[0].message.content)
         try:
             ai_res = ai_response(ar_task).choices[0].message.content
+            ai_res = ai_res.replace("\n","")
             talk(ai_res)
         except openai.error.ServiceUnavailableError:
             talk("Появилась ошибка, попробуй еще раз")
